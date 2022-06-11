@@ -1,0 +1,11 @@
+out/*
+!/out/.gitignore
+!/out/bin
+out/bin/*
+!/out/bin/.gitignore
+!/out/lib
+out/lib/*
+!/out/lib/.gitignore
+
+jre-8u*-linux-x64.tar.gz
+oracle-instantclient-precomp-21.*.el8.x86_64.rpm

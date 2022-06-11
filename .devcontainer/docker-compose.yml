@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Update 'VARIANT' to pick OS version of buster, bullseye.
+        # now gnucobol only support debian buster.
+        VARIANT: 8.6
+
+    volumes:
+      - ..:/workspace:cached
+      
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    env_file:
+      # Ensure that the variables in .env match the same variables in devcontainer.json
+      - .env
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+
+
+  db:
+    # [oracle container registry](https://container-registry.oracle.com/ords/f?p=113:4:108040359511798:::4:P4_REPOSITORY,AI_REPOSITORY,AI_REPOSITORY_NAME,P4_REPOSITORY_NAME,P4_EULA_ID,P4_BUSINESS_AREA_ID:803,803,Oracle%20Database%20Express%20Edition,Oracle%20Database%20Express%20Edition,1,0&cs=3rlDoTvJmxIbOhm8zCM9Pu39KNcIpSoDAL6opqQ1VvL-a2d_Iei8pPRofwRJ0k72ivrFGXE_bmnozQ8o6mU6-Ng)
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    restart: unless-stopped
+    shm_size: 2g
+    ports:
+      - 1521:1521
+    volumes:
+      - ./startup:/docker-entrypoint-initdb.d/startup
+    #   - oracle-data:/opt/oracle/oradata
+    env_file:
+      # Ensure that the variables in .env match the same variables in devcontainer.json
+      - .env
+
+# volumes:
+#   oracle-data:
+      

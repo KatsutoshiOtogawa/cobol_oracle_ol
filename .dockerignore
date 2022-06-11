@@ -1,0 +1,4 @@
+bin/*
+lib/*
+.c4z
+.devcontainer
